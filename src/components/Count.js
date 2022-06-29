@@ -7,6 +7,7 @@ import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Slide from '@mui/material/Slide';
 
 const Count = ({round}) => {
 
@@ -15,7 +16,10 @@ const Count = ({round}) => {
    
   return (
       <Box  mt={2}>
+
     {[...Array(parseInt(round/2))].map((e, i) => <HourglassBottomIcon fontSize={sm_up?'large':'medium'} key={i}/> )}
+
+
     {/* {[...Array(round-1)].map((e, i) => <HourglassTopIcon key={i}/>)} */}
     {round%2==1&&<HourglassTopIcon fontSize={sm_up?'large':'medium'} />}
     {/* <HourglassTopIcon /> */}

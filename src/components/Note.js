@@ -12,12 +12,13 @@ const Note = ({round}) => {
     
     let{user,userNote} = useContext(DataContext)
     let [note,setNote]=useState("")
-    let [savedNote,setSavedNote]=useState(userNote)
+    let [savedNote,setSavedNote]=useState(userNote?userNote:"")
     let [thoughts,setThoughts]=useState(0)
     let created = false
     let server =useAxios()
     const theme = useTheme()
     const lg_up = useMediaQuery(theme.breakpoints.up('lg'));
+    const md_up = useMediaQuery(theme.breakpoints.up('md'));
 
 
     
@@ -47,9 +48,9 @@ const Note = ({round}) => {
 
         if(key==='Enter'&&round%2===1){
 
-            if(note!==""){
+            if(note&&note!==""){
 
-                setSavedNote(thoughts>0?savedNote+"\n"+note:savedNote+note)
+                setSavedNote(note!==''?savedNote+"\n"+note:savedNote+note)
                 setNote("")
                 setThoughts(thoughts+1)
                 
@@ -60,7 +61,7 @@ const Note = ({round}) => {
                     created=true
                 }
                 else{ 
-                    console.log("nore  putted")
+                    // console.log("nore  putted")
                     // notePut()
                 }
                 
@@ -116,12 +117,12 @@ const Note = ({round}) => {
                 placeholder="Press enter to send your distracting thoughts away"
                 InputProps={{
                     disableUnderline: true,
-                    style: {fontSize: "1.5rem"},
+                    style: {fontSize: md_up?'1.65rem':"1.3rem",fontFamily: "Mali"},
                     // readOnly: round % 2==0,
 
                   }}
                   sx={{padding:4}}
-                  InputLabelProps={{style: {fontSize:"1.6rem"}}}
+                  InputLabelProps={{style: {fontSize:md_up?'1.85rem':"1.6rem",fontFamily: "Mali"}}}
                 value={round%2===1?note:savedNote} onChange={e=>{handelNoteChange(e.target.value)}}  
                 onKeyPress={e=>{saveNote(e.key)}}
                 >

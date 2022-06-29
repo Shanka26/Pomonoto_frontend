@@ -17,6 +17,8 @@ const Login = () => {
 
   let [email,setEmail]= useState("")
   let [password,setPassword]= useState("")
+  let [email_message,setEmail_message] = useState("")
+  let [password_message,setPassword_message] = useState("")
   let{loginUser,setAuthTokens,setUser,authTokens} = useContext(DataContext)
   let backend = useAxios()
 
@@ -52,6 +54,7 @@ const login = () => {
           password: password,
       })
       .then((res) => {
+        
           setAuthTokens(res.data)
           setUser(jwt_decode(res.data.access))
           localStorage.setItem('authTokens', JSON.stringify(res.data));
@@ -60,10 +63,16 @@ const login = () => {
           // localStorage.setItem('refresh_token', res.data.refresh);
           // axiosInstance.defaults.headers['Authorization'] =
           //     'JWT ' + localStorage.getItem('access_token');
+          if(res.statusCode === 500)console.log('form submitted')
           navigate('/');
           //console.log(res);
           //console.log(res.data);
-      });
+          
+      }).catch(err=>{
+        err.response.data.email?setEmail_message(err.response.data.email[0]):setEmail_message()
+        err.response.data.password?setPassword_message(err.response.data.email[0]):setPassword_message()
+        err.response.status==500&&setPassword_message("Incorrect email or password")
+      })
 };
 
 // let noteGet=()=>{
@@ -123,14 +132,14 @@ const login = () => {
         
       </Box>
        
-      <Stack spacing={2} justifyContent='center' sx={{ marginLeft:{xs:1,sm:4,lg:8},marginRight:{xs:1,sm:4,lg:8},marginBottom:4 }}>
+      <Stack spacing={1} justifyContent='center' sx={{ marginLeft:{xs:1,sm:4,lg:8},marginRight:{xs:1,sm:4,lg:8},marginBottom:4 }}>
         
         
         
         <TextField required name="email" label="Email" variant="outlined" placeholder="Email" value={email} onChange={handleUsernameChange}/>
-        
+        <Typography color= 'error' sx={{marginBottom:1}}>{email_message}</Typography >
         <TextField required variant="outlined" name="password" type='password'  label="Password" placeholder="Password" value={password} onChange={handlePasswordChange}/>
-               
+        <Typography color= 'error' sx={{marginBottom:1}}>{password_message}</Typography >      
         <Button variant="contained" color='primary' onClick={()=>{login()}}>Log in</Button>
        
         

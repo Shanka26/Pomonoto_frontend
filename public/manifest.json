@@ -3,17 +3,17 @@
   "name": "Pomonoto - Note taking pomodoro",
   "icons": [
     {
-      "src": "clock3.ico",
+      "src": "logo-icon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "clock3.ico",
+      "src": "logo-icon.ico",
       "type": "image/png",
       "sizes": "32x32"
     },
     {
-      "src": "clock3.ico",
+      "src": "logo-icon.ico",
       "type": "image/png",
       "sizes": "32x32"
     }

@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import {React, useState,useEffect } from 'react';
+import {React, useState,useEffect , useRef} from 'react';
 
 import { createTheme } from '@mui/material/styles';
 
@@ -13,6 +13,7 @@ import Notes from './components/Notes'
 import Login from './components/Login'
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import {DataProvider} from './context/DataContext'
 import { Box } from '@material-ui/core';
 
@@ -104,6 +105,7 @@ function App() {
   // let getSoundOn=(on)=>{
   //   setSoundOn(on)
   // }
+  
 
   const theme = createTheme({
         palette: {
@@ -126,21 +128,22 @@ function App() {
               'Indie Flower',
               'cursive',
             ].join(','),
+
             // fontSize:'1.8rem',
             margin:0
-          }
-        },
+          },
         
+        },
 
       
       });
-        
+      
     
 
   return (
     // body
 
-    <Box sx={{backgroundColor:'primary', height: '100vh', }}>
+    <Box sx={{backgroundColor:'primary.dark', height: '100vh', }}>
       <BrowserRouter>
     <DataProvider>
             <ThemeProvider theme={theme}>
@@ -157,12 +160,13 @@ function App() {
                 <Route exact path="/notes" element={<Notes />}/>
               </Routes>
     
+              <Footer/>
             </ThemeProvider>
       
     </DataProvider>
     </BrowserRouter>
 
-    // </Box>
+    </Box>
     
     // <Grid container sx={{bgcolor:theme.palette.primary.main,px:{
     //   xs: 3, // theme.breakpoints.up('xs')

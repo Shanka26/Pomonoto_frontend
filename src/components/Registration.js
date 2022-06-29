@@ -13,7 +13,10 @@ const Registration = () => {
 
 
 
-  let [username,setUsername]= useState("")
+  let [email,setEmail]= useState("")
+  let [email_message,setEmail_message] = useState("")
+  let [password_message,setPassword_message] = useState("")
+  let [password2_message,setPassword2_message] = useState("")
   let [password,setPassword]= useState("")
   let [password2,setPassword2]= useState("")
   let  backend = useAxios()
@@ -37,7 +40,7 @@ const Registration = () => {
 
   let handleUsernameChange = (event) => {
     // this.setState({username: event.target.value});
-    setUsername(event.target.value);
+    setEmail(event.target.value);
   }
 
 
@@ -49,7 +52,7 @@ const Registration = () => {
             
     // 'Content-Type': 'application/json',
     Authorization: 'Bearer ' +String(localStorage.getItem('access_token')),
-    email:username,
+    email:email,
     note: " ",
 
   })
@@ -67,7 +70,7 @@ const Registration = () => {
 		backend
 			.post(`user/register/`, {
         
-				email: username,
+				email: email,
 				password: password,
         password2: password2
 			})
@@ -84,21 +87,30 @@ const Registration = () => {
 
 
   let registerPlease = async()=>{
-    let respone = await fetch(`https://pomonoto-api.herokuapp.com/user/register/`, {
+    fetch(`https://pomonoto-api.herokuapp.com/user/register/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body:
-        JSON.stringify({email: username,
+        JSON.stringify({email: email,
 				password: password,
         password2: password2})
       
+    }).then(res => {
+      if(!res.ok) {
+        return res.text().then(text => { throw new Error(text) })
+       }
+      else {
+       navigate('/login');
+     }    
+    })
+    .catch(err => {
+      let error=JSON.parse(err.message)
+      error.email?setEmail_message(error.email[0]):setEmail_message()
+      error.password?setPassword_message(error.password[0]):setPassword_message()
+      error.password2?setPassword2_message(error.password2[0]):setPassword2_message()
     });
-    notePost()
-    navigate('/login')
-
-
   }
 
 
@@ -121,14 +133,19 @@ const Registration = () => {
           
         </Box>
         
-        <Stack spacing={2} justifyContent='center' sx={{  marginLeft:{xs:1,sm:4,lg:8},marginRight:{xs:1,sm:4,lg:8},marginBottom:4 }}>
+        <Stack spacing={1} justifyContent='center' sx={{  marginLeft:{xs:1,sm:4,lg:8},marginRight:{xs:1,sm:4,lg:8},marginBottom:4 }}>
           
           
           
-          <TextField required name="email" label="Email" variant="outlined" placeholder="Email" value={username} onChange={handleUsernameChange}/>
+          <TextField required name="email" label="Email" variant="outlined" placeholder="Email" value={email} onChange={handleUsernameChange}/>
+          <Typography color= 'error' sx={{marginBottom:1}}>{email_message}</Typography >
           
           <TextField required variant="outlined" name="password" type='password' label="Password" placeholder="Password" value={password} onChange={handlePasswordChange}/>
-          <TextField required variant="outlined" name="password2" type='password' label="Repeat password" placeholder="Repeat password" value={password2} onChange={handlePassword2Change}/>        
+          <Typography color= 'error' sx={{marginBottom:1}}>{password_message}</Typography >
+
+          <TextField required variant="outlined" name="password2" type='password' label="Repeat password" placeholder="Repeat password" value={password2} onChange={handlePassword2Change}/>
+          <Typography color= 'error' sx={{marginBottom:1}}>{password2_message}</Typography >
+
           <Button variant="contained" color='primary' onClick={registerPlease}>Create account</Button>
           
         </Stack>
